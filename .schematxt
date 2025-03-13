@@ -1,0 +1,29 @@
+admin : 
+    name
+    email
+    number
+    hospitalId:-refre
+    role:- user,doctor,admin => default:user
+
+doctor:-
+   name,
+   email
+   pass
+   number
+  
+
+  hospital:
+  name
+  adress
+  number
+  email
+
+
+appointmentBook:
+  userId
+  notes
+  doctorId
+  hospitalId
+  cancelDate
+
+
