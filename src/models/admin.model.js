@@ -1,50 +1,53 @@
 const mongoose = require('mongoose');
 
 const adminSchema = new mongoose.Schema({
- first_name:{
-    type:String,
- },
- last_name:{
+ name:{
     type:String,
  },
  email:{
     type:String,
  },
- phone_number:{
-    type: String
- },
+
  otp: { type: String },
- country:{
-    type:String,
- },
- state:{
-    type:String,
- },
- city:{
-    type:String,
- },
  hospitalId: { type: mongoose.Schema.Types.ObjectId, ref: "hospital" },
-//  hospital:{
-//     type:String,
-//  },
  password:{
     type:String,
  },
- agree:{
-    type:Boolean,
-   //  default:false,
- },
- token:{
+ role:{
    type:String,
+   enum:['user','admin','doctor'],
+   default:"user"
+ },
+ mobile: {
+   type: Number,
+   required: true,
+   unique: true,
+   validate: {
+     validator: function (v) {
+       return /^[0-9]{10}$/.test(v.toString()); // Ensures exactly 10 digits
+     },
+     message: (props) => `${props.value} is not a valid 10-digit mobile number!`,
+   },
  },
  is_active:{
     type:Boolean,
  },
- gender:{
-    type:String,
+ isdeleted:{
+   type: Boolean,
+   default : false
  },
+ createdAt:{
+   type: Date,
+   default: Date.now
+},
+createdByHospital:{
+    type: mongoose.Schema.Types.ObjectId, ref: "hospital" ,
 
-
+},
+ updatedAt:{
+   type: Date,
+   // default: Date.now
+},
 });
 
 const Admin = mongoose.model('admin', adminSchema);

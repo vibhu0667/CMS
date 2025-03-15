@@ -1,32 +1,26 @@
-const http = require("http");
 const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const { connectDB } = require("./connection/connection.js");
 const app = express();
+const http = require("http");
+const server = http.createServer(app);
+const bodyParser = require("body-parser");
+const { connectDB } = require("./connection/connection");
+const router = require("./routes/index");
+const cookieparser = require("cookie-parser");
+
+
+app.use(cookieparser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 connectDB();
 
-app.use(express.json());
-
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-// app.use(express.static(path.resolve(__dirname, `./src/public`)));
-
-
-// app.use("/v1", routes);
+app.use("/v1", router);
 
 app.get('/',(req,res)=>{
 res.json("hello worldfhrfh")
 })
 
 
-const startServer = async () => {
-    await connectDB();  // Ensure database connection is established
-  app.listen(3000, () => {
-    console.log("Server is running on port 3000");
-  });
-};
-
-startServer();
+server.listen(3000, () => {
+  console.log(`server is done at port number ${3000}`);
+});
